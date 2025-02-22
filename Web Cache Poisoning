@@ -28,12 +28,10 @@ Technique: Exploiting the way the application handles different content types.
 
 Example: An attacker sends a request that causes the server to respond with a different content type:
 
-http
-Run
-Copy code
 GET /download?file=report.pdf HTTP/1.1
 Host: example.com
 Accept: application/json
+
 If the server responds with a JSON payload instead of the expected PDF, and this response is cached, the attacker can poison the cache with malicious JSON content. When other users download the file, they receive the malicious response.
 
 4. Cache Key Manipulation
@@ -41,10 +39,8 @@ Technique: Manipulating request parameters to create a unique cache key.
 
 Example: An attacker sends a request with a crafted URL:
 
-http
-Run
-Copy code
 GET /item?id=1&session=12345&malicious=<script>alert('XSS');</script> HTTP/1.1
+
 If the application caches responses based on the id and session parameters without validating malicious, the cache may store the response containing the script. Subsequent requests for the same item could serve the malicious content.
 
 5. Using GET Requests
@@ -52,10 +48,8 @@ Technique: Exploiting the fact that many caching mechanisms cache GET requests.
 
 Example: An attacker sends a GET request with a malicious payload:
 
-http
-Run
-Copy code
 GET /comments?post_id=1&comment=<script>alert('Hacked!');</script> HTTP/1.1
+
 If the application caches the response without sanitizing the comment, the cache may store the malicious script. When other users view the comments, they execute the script.
 
 6. Cache Bypass
@@ -63,14 +57,12 @@ Technique: Attempting to bypass cache mechanisms to deliver malicious content di
 
 Example: An attacker might exploit a vulnerability in the application to send a request that bypasses the cache:
 
-http
-Run
-Copy code
 POST /submit-comment HTTP/1.1
 Host: example.com
 Content-Type: application/x-www-form-urlencoded
 
 comment=<script>alert('Hacked!');</script>
+
 If the application does not properly handle POST requests and caches the response, the malicious comment could be served to other users.
 
 7. Cross-Site Scripting (XSS)
@@ -78,10 +70,8 @@ Technique: Injecting scripts that are cached and executed by other users.
 
 Example: An attacker exploits an XSS vulnerability:
 
-http
-Run
-Copy code
 GET /profile?user=<script>alert('Hacked!');</script> HTTP/1.1
+
 If the application caches the response without sanitizing the user parameter, the script gets stored. When other users access the profile, they execute the script.
 
 8. Cache-Control Misconfigurations
@@ -89,10 +79,8 @@ Technique: Exploiting misconfigured cache settings.
 
 Example: An attacker sends a request that should not be cached:
 
-http
-Run
-Copy code
 GET /sensitive-data HTTP/1.1
 Host: example.com
 Cache-Control: no-store
+
 If the server ignores the no-store directive and caches the response, the attacker can later access this cached sensitive data.
