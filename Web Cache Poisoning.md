@@ -3,7 +3,7 @@ Web cache poisoning is a type of attack that targets the caching mechanisms of w
 
 ## METHOD OF PERFORMING WEB CACHE POISONING
 
-1.` HTTP Header Manipulation`
+### 1. HTTP Header Manipulation
 Technique: Attackers manipulate HTTP headers to influence caching behavior.
 
 Example: An attacker sends a request with a custom Cache-Control header:
