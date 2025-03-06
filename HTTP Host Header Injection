@@ -1,4 +1,3 @@
 HOST HEADER INJECTION:--
 
 It is a type of web security vulnerability that occurs when a web application improperly handles the "Host" header in HTTP requests. The "Host" header specifies the domain name of the server that the client is trying to reach. If an application does not validate or sanitize this header correctly, an attacker can manipulate it to perform malicious actions.
-
