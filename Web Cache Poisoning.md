@@ -13,7 +13,7 @@ Host: example.com
 Cache-Control: no-cache
 ```
 
-If the server does not properly handle this header, it may cache the response despite the request indicating it should not be cached. The attacker could then exploit this by sending a request that results in a malicious response being cached.
+- If the server does not properly handle this header, it may cache the response despite the request indicating it should not be cached. The attacker could then exploit this by sending a request that results in a malicious response being cached.
 
 2. Parameter Pollution
 Technique: Injecting additional parameters into the URL to create a unique cache entry.
