@@ -31,3 +31,15 @@ GET / HTTP/1.1
 Host: vulnerable-website.com  
 X-Forwarded-Host: attacker.com  
 ```
+### 5. Open Redirects
+By injecting a malicious Host header, attackers can exploit open redirect vulnerabilities to redirect users to phishing sites.
+
+`Request:`
+```text
+GET /redirect?url=http://malicious.com HTTP/1.1  
+Host: vulnerable-website.com
+``` 
+`Response:`
+The server may redirect the user to the attacker-controlled site, leading to potential credential theft.
+
+
