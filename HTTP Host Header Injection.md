@@ -40,6 +40,7 @@ GET /redirect?url=http://malicious.com HTTP/1.1
 Host: vulnerable-website.com
 ``` 
 `Response:`
+
 The server may redirect the user to the attacker-controlled site, leading to potential credential theft.
 
 
