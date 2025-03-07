@@ -43,4 +43,18 @@ Host: vulnerable-website.com
 
 The server may redirect the user to the attacker-controlled site, leading to potential credential theft.
 
+### 6. Cross-Site Scripting (XSS)
+By injecting a crafted Host header, attackers can exploit XSS vulnerabilities in applications that reflect the Host header in their responses.
+
+`Request:`
+```text
+GET /search?q=<script>alert('XSS')</script> HTTP/1.1  
+Host: vulnerable-website.com  
+```
+`Response:`
+
+If the application reflects the input without sanitization, it may execute the injected script in the user's browser.
+
+
+
 
