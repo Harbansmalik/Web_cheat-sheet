@@ -1,3 +1,36 @@
 # HOST HEADER INJECTION
 
 It is a type of web security vulnerability that occurs when a web application improperly handles the "Host" header in HTTP requests. The "Host" header specifies the domain name of the server that the client is trying to reach. If an application does not validate or sanitize this header correctly, an attacker can manipulate it to perform malicious actions.
+
+## Method to perform Host Header Injection
+
+### - Malformed Host Header Value
+
+Attackers can inject a malformed Host header value in the HTTP request. For instance, including a newline character can create a new header field, which may confuse the server.
+```text
+GET /index.html HTTP/1.1  
+Host: www.example.com%0d%0aX-Forwarded-For: attacker.com  
+```
+### - Multiple Host Header Values
+By injecting multiple Host header values, attackers can exploit servers that read more than one Host header. This can lead to unexpected behavior.
+
+http
+Run
+Copy code
+GET /example HTTP/1.1  
+Host: malicioussite  
+Host: vulnerable-website.com  
+Spoofed Host Header
+Attackers can spoof the Host header to make it appear as if the request is coming from a trusted domain. This can trick the server into processing the request as legitimate.
+
+GET /index.html HTTP/1.1  
+Host: www.example.com.attacker.com  
+Using X-Forwarded-Host Header
+The X-Forwarded-Host header can be manipulated to inject malicious input while bypassing validation on the Host header.
+
+http
+Run
+Copy code
+GET / HTTP/1.1  
+Host: vulnerable-website.com  
+X-Forwarded-Host: attacker.com  
