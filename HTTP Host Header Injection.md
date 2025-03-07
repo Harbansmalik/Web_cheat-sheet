@@ -4,33 +4,30 @@ It is a type of web security vulnerability that occurs when a web application im
 
 ## Method to perform Host Header Injection
 
-### - Malformed Host Header Value
+### 1. Malformed Host Header Value
 
 Attackers can inject a malformed Host header value in the HTTP request. For instance, including a newline character can create a new header field, which may confuse the server.
 ```text
 GET /index.html HTTP/1.1  
 Host: www.example.com%0d%0aX-Forwarded-For: attacker.com  
 ```
-### - Multiple Host Header Values
+### 2. Multiple Host Header Values
 By injecting multiple Host header values, attackers can exploit servers that read more than one Host header. This can lead to unexpected behavior.
-
-http
-Run
-Copy code
+```text
 GET /example HTTP/1.1  
 Host: malicioussite  
 Host: vulnerable-website.com  
-Spoofed Host Header
+```
+### 3.Spoofed Host Header
 Attackers can spoof the Host header to make it appear as if the request is coming from a trusted domain. This can trick the server into processing the request as legitimate.
-
+```text
 GET /index.html HTTP/1.1  
 Host: www.example.com.attacker.com  
-Using X-Forwarded-Host Header
+```
+### 4. Using X-Forwarded-Host Header
 The X-Forwarded-Host header can be manipulated to inject malicious input while bypassing validation on the Host header.
-
-http
-Run
-Copy code
+```text
 GET / HTTP/1.1  
 Host: vulnerable-website.com  
 X-Forwarded-Host: attacker.com  
+```
