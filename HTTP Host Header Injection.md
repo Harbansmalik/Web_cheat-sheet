@@ -60,7 +60,7 @@ If the application reflects the input without sanitization, it may execute the i
 A user requests a password reset link via email:
 ```text
 POST /reset-password HTTP/1.1
-Host: example.com
+Host: *exploit-server-ip*
 Content-Type: application/json
 
 {"email": "victim@example.com"}
