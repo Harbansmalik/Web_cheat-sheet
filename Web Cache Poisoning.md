@@ -1,7 +1,7 @@
 # Web Cache Poisoning :- 
 Web cache poisoning is a type of attack that targets the caching mechanisms of web applications, usually to manipulate or corrupt the content that is stored in a cache. A web cache is used by websites to temporarily store copies of frequently accessed resources (like web pages, images, or scripts) to reduce server load and speed up user access. However, if an attacker can inject malicious data into this cache, they can alter the content served to users. 
 
-## METHOD OF PERFORMING WEB CACHE POISONING
+## `METHOD OF PERFORMING WEB CACHE POISONING`
 
 ### 1. HTTP Header Manipulation
 `Technique:` Attackers manipulate HTTP headers to influence caching behavior.
