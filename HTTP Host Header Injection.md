@@ -55,6 +55,19 @@ Host: vulnerable-website.com
 
 If the application reflects the input without sanitization, it may execute the injected script in the user's browser.
 
+### 7. Account takeover via reset password
 
+A user requests a password reset link via email:
+```text
+POST /reset-password HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{"email": "victim@example.com"}
+```
+The application generates a password reset link like this:
+```text
+https://example.com/reset?token=ABC123
+```
 
 
