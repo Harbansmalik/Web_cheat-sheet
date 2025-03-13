@@ -116,5 +116,5 @@ Authorization: Bearer <stolen_access_token>
 - Client Secrets: For confidential clients, use strong client secrets and rotate them regularly. Avoid hardcoding secrets in the application code.
 - Public Clients: For public clients (e.g., mobile apps), consider using PKCE to enhance security.
 ### 8. Monitor and Log OAuth Activities
--Logging: Implement logging for OAuth-related activities, including authorization requests, token exchanges, and revocations. Monitor logs for suspicious activities.
+- Logging: Implement logging for OAuth-related activities, including authorization requests, token exchanges, and revocations. Monitor logs for suspicious activities.
 - Alerts: Set up alerts for unusual patterns, such as multiple failed login attempts or token reuse.
