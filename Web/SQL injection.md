@@ -2,6 +2,9 @@
 
 SQL Injection is a security vulnerability that allows attackers to manipulate SQL queries by injecting malicious code, potentially gaining unauthorized access to or manipulating a database.
 
+## DIFFERNCE BETWEEN SQL AND NOSQL INJECTION:
+SQL databases are structured, use predefined schemas, and support complex queries with ACID properties. NoSQL databases are unstructured, schema-less, and designed for scalability, flexibility, and handling large volumes of data.
+
 ## Types of SQL injection
 
 ### 1. In-Band SQL Injection
