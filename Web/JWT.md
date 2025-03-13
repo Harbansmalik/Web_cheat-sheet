@@ -4,7 +4,7 @@ JWT (JSON Web Token) attacks exploit vulnerabilities in token handling, such as 
 
 ## Methods to perform JWT
 
-- ###Algorithm Manipulation:
+- ### Algorithm Manipulation:
 
 Attackers can exploit applications that do not properly validate the algorithm specified in the JWT header. If the application accepts none as a valid algorithm, an attacker can create a token without a signature.
 Example:
