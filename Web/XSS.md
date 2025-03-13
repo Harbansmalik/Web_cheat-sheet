@@ -166,13 +166,16 @@ If the JSON data is controlled by an attacker, the script executes.
   Encode data before rendering it in the browser to prevent execution of injected scripts.
 
 - ### Avoid Dangerous Functions:
-  Refrain from using functions like "eval()", "document.write()", and direct DOM manipulation with untrusted data.
+  Refrain from using functions like " eval() ", " document.write() ", and direct DOM manipulation with untrusted data.
 
 - ### Use Safe APIs:
-  Utilize safer alternatives for manipulating the DOM, such as "textContent" or "setAttribute()" instead of "innerHTML".
+  Utilize safer alternatives for manipulating the DOM, such as " textContent " or " setAttribute() " instead of "innerHTML".
 
 - ### Content Security Policy (CSP):
   Implement a strong CSP to restrict the sources from which scripts can be executed.
 
 - ### Use Frameworks with Built-in XSS Protection:
-  Many modern web frameworks and libraries provide built-in mechanisms to prevent XSS like react etc.
+  Many modern web frameworks and libraries provide built-in mechanisms to prevent XSS like " react " etc.
+
+- ### Escape Output:
+  Use " htmlspecialchars() " in PHP or " encodeURIComponent() " in JavaScript.
