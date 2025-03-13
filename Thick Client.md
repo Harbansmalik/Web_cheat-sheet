@@ -1,7 +1,7 @@
 # THICK CLIENT
 A Thick Client (Fat Client) is a standalone application that interacts with a server but performs most of the processing on the client side. Common examples include desktop applications (Windows, macOS, Linux) built using technologies like Java, .NET, Electron, C++, etc.
 
-##Here’s a comprehensive security checklist for performing thick client penetration testing (Pentesting).
+## Here’s a comprehensive security checklist for performing thick client penetration testing (Pentesting).
 
 
 ### 🛠 Step 1: Information Gathering & Recon
