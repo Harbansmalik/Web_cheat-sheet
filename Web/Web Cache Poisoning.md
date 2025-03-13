@@ -85,3 +85,100 @@ Host: example.com
 Cache-Control: no-store
 ```
 If the server ignores the no-store directive and caches the response, the attacker can later access this cached sensitive data.
+
+## Mitigation of Web Cache Poisoning:
+
+### 1️⃣ Sanitize and Validate User Input
+Attackers often inject harmful payloads into headers, URLs, or parameters that get cached.
+
+✅ Solution:
+
+Whitelist allowed characters for query parameters.
+Use server-side validation to reject unexpected inputs.
+Apply input sanitization to prevent injection of scripts or control characters.
+Example (Sanitizing User Input in PHP)
+```text
+$input = filter_input(INPUT_GET, 'user', FILTER_SANITIZE_STRING);
+echo htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+```
+### 2️⃣ Avoid Caching Untrusted User Inputs
+Certain headers and query parameters should never be cached, especially those containing user-specific data.
+
+✅ Solution:
+
+Disable caching for dynamic pages that rely on user input.
+Prevent caching of responses containing cookies, authentication headers, or sensitive data.
+Example (Prevent Caching in HTTP Headers)
+```text
+
+Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+Pragma: no-cache
+```
+
+### 3️⃣ Implement Strong Cache Key Policies
+If cache servers consider only the URL and ignore headers, attackers can poison the cache using header-based injections.
+
+✅ Solution:
+
+Ensure that caching includes important request headers (e.g., User-Agent, Authorization).
+Use Vary headers to define correct cache policies.
+Example (Secure Vary Header in Nginx)
+```text
+proxy_cache_key "$scheme$request_method$host$request_uri$http_user_agent";
+```
+### 4️⃣ Use Content Security Policy (CSP) to Prevent XSS
+If an attacker injects malicious JavaScript through a poisoned cache, CSP can prevent execution.
+
+✅ Solution:
+Set a strict CSP policy to block unauthorized scripts.
+
+Example (CSP Header to Prevent XSS from Poisoned Cache)
+```text
+Content-Security-Policy: default-src 'self'; script-src 'self';
+```
+### 5️⃣ Enable Proper Cache Invalidation
+Cache poisoning occurs when old, manipulated content is stored too long.
+
+✅ Solution:
+
+Set short cache expiration for dynamic content.
+Use Cache Purging (CDN APIs) to remove outdated content.
+Implement ETag validation to serve fresh responses.
+Example (Setting a Short Cache Lifetime in Apache)
+
+```text
+ExpiresActive On
+ExpiresDefault "access plus 5 minutes"
+```
+### 6️⃣ Restrict HTTP Header Manipulation
+Attackers often exploit untrusted headers like X-Forwarded-Host or X-Forwarded-For.
+
+✅ Solution:
+
+Whitelist allowed headers and reject unexpected ones.
+Strip out untrusted headers from incoming requests before they reach the cache.
+Example (Stripping Untrusted Headers in Nginx)
+```text
+proxy_set_header X-Forwarded-Host "";
+proxy_set_header X-Forwarded-For "";
+```
+### 7️⃣ Use Web Application Firewalls (WAFs)
+WAFs can detect and block cache poisoning attempts in real time.
+
+✅ Solution:
+
+Configure a WAF to block suspicious payloads.
+Use rate limiting to prevent repeated exploitation attempts.
+Example (Blocking Malicious Query Strings in ModSecurity WAF)
+```text
+SecRule ARGS "(\<script\>|document\.cookie)" "deny,status:403"
+```
+### 8️⃣ Secure Content Delivery Networks (CDN)
+Many CDNs cache responses aggressively, making them a target for poisoning.
+
+✅ Solution:
+
+Enable authentication for cache purging APIs.
+Use cache segmentation to prevent sharing across users.
+Monitor logs for unexpected cache behavior.
+
