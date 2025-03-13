@@ -70,4 +70,92 @@ The application generates a password reset link like this:
 https://example.com/reset?token=ABC123
 ```
 
+## Mitigation of Host header injection:
+
+### 1️⃣ Enforce a Strict Allowlist of Trusted Hostnames
+✅ Solution:
+
+Only allow approved domain names in the Host header.
+Block requests with unexpected or empty Host headers.
+🔹 Example (Enforcing Allowed Hostnames in Python/Django)
+```text
+ALLOWED_HOSTS = ["example.com", "www.example.com"]
+```
+🔹 Example (Enforcing Allowed Hosts in Apache .htaccess)
+```text
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^(www\.)?example\.com$ [NC]
+RewriteRule ^ - [F]
+```
+🔹 Example (Enforcing Allowed Hosts in Nginx)
+```text
+server {
+    listen 80;
+    server_name example.com www.example.com;
+    if ($host !~* ^(example\.com|www\.example\.com)$) {
+        return 403;
+    }
+}
+```
+### 2️⃣ Do Not Trust User-Supplied "Host" Headers in Application Logic
+✅ Solution:
+
+Avoid using $_SERVER['HTTP_HOST'] (PHP) or request.get_host() (Django) directly.
+Use hardcoded values for password reset links instead of relying on the Host header.
+🔹 Example (Secure Password Reset Link in PHP)
+
+```text
+$reset_link = "https://example.com/reset-password?token=$token";
+```
+### 3️⃣ Configure Web Server to Reject Invalid Host Headers
+✅ Solution:
+
+Set strict Host header validation in your server configuration.
+Reject requests that contain multiple Host headers.
+🔹 Example (Blocking Host Header Attacks in Apache)
+```text
+<If "%{HTTP_HOST} !~ /^example\.com$/">
+    Require all denied
+</If>
+```
+🔹 Example (Blocking Host Header Attacks in Nginx)
+```text
+if ($http_host !~* ^(example\.com|www\.example\.com)$) {
+    return 403;
+}
+```
+## 4️⃣ Prevent Web Cache Poisoning
+If a web application uses a cache system (CDN, Varnish, etc.), attackers can exploit it by injecting Host headers to store malicious responses.
+
+✅ Solution:
+
+Ensure cache keys include only trusted Host values.
+Set a strict Cache-Control policy.
+🔹 Example (Prevent Cache Poisoning in Apache)
+```text
+Header set Cache-Control "no-cache, no-store, must-revalidate"
+```
+🔹 Example (Prevent Cache Poisoning in Nginx)
+```text
+proxy_cache_key "$scheme$request_method$host$request_uri";
+```
+## 5️⃣ Implement a Web Application Firewall (WAF)
+✅ Solution:
+
+Deploy a WAF to detect and block Host Header Injection attempts.
+Filter requests that contain multiple Host headers or malformed inputs.
+🔹 Example (ModSecurity Rule to Block Host Header Injection)
+
+```text
+SecRule REQUEST_HEADERS:Host "!^example\.com$" "deny,status:403"
+```
+## 6️⃣ Use Strict Transport Security (HSTS)
+✅ Solution:
+
+Enforce HTTPS and prevent HTTP downgrade attacks.
+Block browsers from accepting modified Host headers.
+🔹 Example (Enable HSTS in Apache/Nginx)
+```text
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+```
 
