@@ -7,11 +7,11 @@ SSL pinning is a security technique that binds a client application to a specifi
 Links to network security configuration file.
 - ### usesCleartextTraffic="false"
   Ensures HTTPS is enforced.
-- ### <network-security-config>
+- ### network-security-config
   Defines security rules in XML.
-- ### <domain-config>
+- ### domain-config
   Specifies domains for pinning.
-- ### <pin-set>
+- ### pin-set
   Contains pinned certificate fingerprints.
-- ### <pin digest="SHA-256">
+- ### pin digest="SHA-256"
   Defines the hash of a trusted certificate.
