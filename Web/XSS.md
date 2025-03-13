@@ -75,3 +75,104 @@ If a web application uses a library that allows HTML rendering without sanitizat
 ```text
 <div><script>alert('XSS via Library!');</script></div>
 ```
+
+## MEthods to perform Dom-Based XSS:
+
+### - Manipulating URL Parameters:
+Attackers can inject malicious scripts through URL parameters that are directly used in the DOM without proper sanitization.
+`Example:`
+```text
+// Vulnerable JavaScript code
+const userInput = location.hash.substring(1); // Gets the hash from the URL
+document.getElementById('output').innerHTML = userInput; // Directly injects into the DOM
+```
+`Payload:`
+```text
+http://example.com/#<script>alert('DOM XSS!');</script>
+```
+When the user visits this URL, the script executes.
+
+### - Using eval():
+If the application uses eval() to execute JavaScript code from user input, it can lead to severe vulnerabilities.
+`Example:`
+```text
+// Vulnerable JavaScript code
+const userInput = getUser Input(); // Assume this gets input from the user
+eval(userInput); // Executes user input as code
+```
+`Payload:`
+```text
+alert('DOM XSS via eval!');
+```
+If an attacker can control getUser Input(), they can execute arbitrary code.
+
+### - Exploiting document.write():
+Using document.write() with untrusted data can lead to XSS if the data is not sanitized.
+`Example:`
+```text
+// Vulnerable JavaScript code
+const userInput = getUser Input(); // Assume this gets input from the user
+document.write(userInput); // Writes user input directly to the document
+```
+`Payload:`
+```text
+<script>alert('DOM XSS via document.write!');</script>
+```
+If the attacker can control getUser Input(), they can inject scripts.
+
+### - Using Event Handlers:
+Attackers can inject malicious payloads into event handlers that execute when a user interacts with the page.
+`Example:`
+```text
+<div id="container"></div>
+<script>
+    const userInput = getUser Input(); // Assume this gets input from the user
+    document.getElementById('container').innerHTML = `<button onclick="${userInput}">Click me</button>`;
+</script
+```
+`Payload:`
+```text
+alert('DOM XSS via Event Handler!');
+```
+When the button is clicked, the injected script executes.
+
+### - Using setTimeout() or setInterval():
+If user input is passed to setTimeout() or setInterval(), it can lead to XSS.
+`Example:`
+```text
+const userInput = getUser Input(); // Assume this gets input from the user
+setTimeout(userInput, 1000); // Executes user input after 1 second
+```
+`Payload:`
+```text
+alert('DOM XSS via setTimeout!');
+```
+
+### - Exploiting JSON Data:
+If the application uses JSON data that includes user input without proper sanitization, it can lead to XSS.
+`Example:`
+```text
+const jsonData = '{"message": "<script>alert(\'DOM XSS via JSON!\');</script>"}';
+const data = JSON.parse(jsonData);
+document.getElementById('output').innerHTML = data.message; // Directly injects into the DOM
+```
+If the JSON data is controlled by an attacker, the script executes.
+
+## Mitigation of XSS:
+- ### Input Validation :
+  Validate and sanitize all user inputs to ensure they do not contain malicious scripts.
+
+- ### Output Encoding:
+  Encode data before rendering it in the browser to prevent execution of injected scripts.
+
+- ### Avoid Dangerous Functions:
+  Refrain from using functions like "eval()", "document.write()", and direct DOM manipulation with untrusted data.
+
+- ### Use Safe APIs:
+  Utilize safer alternatives for manipulating the DOM, such as "textContent" or "setAttribute()" instead of "innerHTML".
+
+- ### Content Security Policy (CSP):
+  Implement a strong CSP to restrict the sources from which scripts can be executed.
+
+- ### Use Frameworks with Built-in XSS Protection:
+  Many modern web frameworks and libraries provide built-in mechanisms to prevent XSS like react etc.
