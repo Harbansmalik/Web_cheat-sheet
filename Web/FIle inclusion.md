@@ -5,7 +5,7 @@ File inclusion is a web vulnerability allowing attackers to include files on a s
 ## METHODS TO PEFORM FILE INCLUSION
 
 ## 1.Advanced Techniques for LFI
-- ###Directory Traversal
+- ### Directory Traversal
 
 Attackers can use directory traversal sequences (e.g., ../) to navigate the file system and include files outside the intended directory.
 Example:
