@@ -29,6 +29,7 @@ By default, JavaScript objects inherit from Object.prototype, making them vulner
 ```text
 let obj = {}; 
 console.log(obj.toString); // Exists because it inherits from Object.prototype
+```
 ✅ Secure Code
 ```text
 let obj = Object.create(null); 
