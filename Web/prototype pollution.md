@@ -1,6 +1,6 @@
 # Prototype Pollution
 
-WebSockets provide full-duplex, real-time communication between a client and a server over a single TCP connection. Unlike HTTP, which follows a request-response model, WebSockets allow persistent bidirectional communication without the overhead of multiple HTTP requests.
+Prototype pollution is a security vulnerability in JavaScript that allows attackers to manipulate an object's prototype, potentially leading to unauthorized access, data manipulation, or application behavior changes.
 
 ## MITIGATIONS
 ### 1️⃣ Prevent Overwriting __proto__, constructor, or prototype Properties
