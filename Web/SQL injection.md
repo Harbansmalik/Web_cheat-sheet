@@ -3,8 +3,8 @@
 SQL Injection is a security vulnerability that allows attackers to manipulate SQL queries by injecting malicious code, potentially gaining unauthorized access to or manipulating a database.
 
 ## DIFFERNCE BETWEEN SQL AND NOSQL INJECTION:
-SQL databases are structured, use predefined schemas, and support complex queries with Atomicity, Consistency, Isolation, and Durability (ACID) properties. NoSQL databases are unstructured, schema-less, and designed for scalability, flexibility, and handling large volumes of data.
-NoSQL Injection is an attack where an attacker manipulates NoSQL queries (like MongoDB, CouchDB, or Firebase) by injecting malicious input.
+- SQL databases are structured, use predefined schemas, and support complex queries with Atomicity, Consistency, Isolation, and Durability (ACID) properties. NoSQL databases are unstructured, schema-less, and designed for scalability, flexibility, and handling large volumes of data.
+- NoSQL Injection is an attack where an attacker manipulates NoSQL queries (like MongoDB, CouchDB, or Firebase) by injecting malicious input.
 Unlike SQL databases, NoSQL databases do not use structured query language (SQL) but still accept user input to query data, making them vulnerable to injection attacks.
 
 ## Types of SQL injection
