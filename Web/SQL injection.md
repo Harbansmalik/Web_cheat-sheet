@@ -1,4 +1,4 @@
-# SQl Injection
+# SQL Injection
 
 SQL Injection is a security vulnerability that allows attackers to manipulate SQL queries by injecting malicious code, potentially gaining unauthorized access to or manipulating a database.
 
