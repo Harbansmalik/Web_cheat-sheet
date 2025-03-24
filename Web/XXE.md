@@ -23,30 +23,28 @@ parser = etree.XMLParser(resolve_entities=False, no_network=True)
 tree = etree.parse("input.xml", parser
 ```
 🔹 PHP (libxml)
-php
-Copy
-Edit
+```text
 libxml_disable_entity_loader(true);
 $xml = new SimpleXMLElement($input, LIBXML_NOENT | LIBXML_DTDLOAD);
-✅ 2️⃣ Use Safer XML Parsers
+```
+### ✅ 2️⃣ Use Safer XML Parsers
 Some XML parsers are designed to be safe by default, such as:
 
-Java: StAX or XOM
+Java: `StAX or XOM`
 
-Python: defusedxml
+Python: `defusedxml`
 
-.NET: XmlReaderSettings
+.NET: `XmlReaderSettings`
 
-✅ 3️⃣ Validate & Sanitize Input
+### ✅ 3️⃣ Validate & Sanitize Input
 If your application does not need XML processing, block XML input completely.
 
-java
-Copy
-Edit
+```text
 if (input.contains("<!DOCTYPE") || input.contains("<!ENTITY")) {
     throw new SecurityException("Potential XXE attack detected!");
 }
-✅ 4️⃣ Use JSON Instead of XML
+```
+### ✅ 4️⃣ Use JSON Instead of XML
 Whenever possible, prefer JSON over XML to eliminate XML-specific attacks like XXE.
 
 
