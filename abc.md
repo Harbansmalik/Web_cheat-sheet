@@ -1,187 +1,134 @@
-# JAAS Cheat Sheet
+1. Cookies Without HTTPOnly Flag
 
-## Introduction - What is JAAS authentication
+Description:
+The HTTPOnly flag is not set on cookies, which means JavaScript running in the browser can access them. This increases the risk of session hijacking via Cross-Site Scripting (XSS) attacks.
 
-The process of verifying the identity of a user or another system is authentication.
+Observation:
+The application sets cookies without the HTTPOnly attribute, making them accessible via JavaScript. An attacker exploiting an XSS vulnerability can steal these cookies and hijack user sessions.
 
-[JAAS](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jaas/JAASRefGuide.html), as an authentication framework manages the authenticated user's identity and credentials from login to logout.
+Impact:
+ • Increases the risk of session hijacking.
+ • If an attacker injects malicious scripts (XSS), they can steal session tokens.
+ • Could lead to account takeover or privilege escalation.
 
-The JAAS authentication lifecycle:
+Recommendation:
+ • Set the HTTPOnly attribute for all sensitive cookies:
 
-1. Create `LoginContext`.
-2. Read the configuration file for one or more `LoginModules` to initialize.
-3. Call `LoginContext.initialize()` for each LoginModule to initialize.
-4. Call `LoginContext.login()` for each LoginModule.
-5. If login successful then call `LoginContext.commit()` else call `LoginContext.abort()`
+Set-Cookie: sessionid=abc123; Path=/; Secure; HttpOnly
 
-## Configuration file
 
-The JAAS configuration file contains a `LoginModule` stanza for each `LoginModule` available for logging on to the application.
+ • Regularly audit cookies and remove unnecessary ones.
 
-A stanza from a JAAS configuration file:
+⸻
 
-```text
-Branches
-{
-    USNavy.AppLoginModule required
-    debug=true
-    succeeded=true;
-}
-```
+2. CSP Allows Untrusted Execution
 
-Note the placement of the semicolons, terminating both `LoginModule` entries and stanzas.
+Description:
+The Content Security Policy (CSP) allows execution of untrusted scripts, which increases the risk of Cross-Site Scripting (XSS) and data injection attacks.
 
-The word required indicates the `LoginContext`'s `login()` method must be successful when logging in the user. The `LoginModule`-specific values `debug` and `succeeded` are passed to the `LoginModule`.
+Observation:
+The CSP configuration is too permissive (e.g., unsafe-inline or * wildcard in script-src). This allows attackers to inject malicious scripts that execute in the browser.
 
-They are defined by the `LoginModule` and their usage is managed inside the `LoginModule`. Note, Options are Configured using key-value pairing such as `debug="true"` and the key and value should be separated by a `=` sign.
+Impact:
+ • Attackers can exploit XSS vulnerabilities to steal session tokens or perform unauthorized actions.
+ • Users may be tricked into running malicious scripts, leading to account compromise.
 
-## Main.java (The client)
+Recommendation:
+ • Update the CSP to restrict script execution:
 
-- Execution syntax:
+Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.cdn.com
 
-```text
-Java –Djava.security.auth.login.config==packageName/packageName.config
-        packageName.Main Stanza1
 
-Where:
-    packageName is the directory containing the config file.
-    packageName.config specifies the config file in the Java package, packageName.
-    packageName.Main specifies Main.java in the Java package, packageName.
-    Stanza1 is the name of the stanza Main() should read from the config file.
-```
+ • Remove unsafe-inline and unsafe-eval from the policy.
 
-- When executed, the 1st command-line argument is the stanza from the config file. The Stanza names the `LoginModule` to be used. The 2nd argument is the `CallbackHandler`.
-- Create a new `LoginContext` with the arguments passed to `Main.java`.
-    - `loginContext = new LoginContext (args[0], new AppCallbackHandler());`
-- Call the LoginContext.Login Module:
-    - `loginContext.login();`
-- The value in succeeded Option is returned from `loginContext.login()`.
-- If the login was successful, a subject was created.
+⸻
 
-## LoginModule.java
+3. ICA Clear Pass (Cleartext Password Exposure)
 
-A `LoginModule` must have the following authentication methods:
+Description:
+The .ICA file contains credentials in plaintext, allowing anyone with access to the file to retrieve usernames and passwords.
 
-- `initialize()`
-- `login()`
-- `commit()`
-- `abort()`
-- `logout()`
+Observation:
+The .ICA file includes the ClearPassword field, which stores passwords in cleartext. This exposes credentials to attackers who can retrieve them from logs, temporary files, or man-in-the-middle (MITM) attacks.
 
-### initialize()
+Impact:
+ • Credentials exposure: Attackers can easily steal user credentials and gain unauthorized access.
+ • If password reuse is common, attackers could use stolen credentials for other services.
+ • Could lead to full account takeover or privilege escalation in Citrix sessions.
 
-In `Main()`, after the `LoginContext` reads the correct stanza from the config file, the `LoginContext` instantiates the `LoginModule` specified in the stanza.
+Recommendation:
+ • Remove ClearPassword field from .ICA files.
+ • Use strong authentication mechanisms (e.g., SSO, OAuth, or Kerberos).
+ • Enforce multi-factor authentication (MFA) to mitigate password theft risks.
 
-- `initialize()` methods signature:
-    - `Public void initialize (Subject subject, CallbackHandler callbackHandler, Map sharedState, Map options)`
-- The arguments above should be saved as follows:
-    - `this.subject = subject;`
-    - `this.callbackHandler = callbackHandler;`
-    - `this.sharedState = sharedState;`
-    - `this.options = options;`
-- What the `initialize()` method does:
-    - Builds a subject object of the `Subject` class contingent on a successful `login()`.
-    - Sets the `CallbackHandler` which interacts with the user to gather login information.
-    - If a `LoginContext` specifies 2 or more LoginModules, which is legal, they can share information via a `sharedState` map.
-    - Saves state information such as debug and succeeded in an options Map.
+⸻
 
-### login()
+4. Old jQuery Version
 
-Captures user supplied login information. The code snippet below declares an array of two callback objects which, when passed to the `callbackHandler.handle` method in the `callbackHandler.java` program, will be loaded with a username and password provided interactively by the user:
+Description:
+The application is using an outdated version of jQuery, which may contain known security vulnerabilities.
 
-```java
-NameCallback nameCB = new NameCallback("Username");
-PasswordCallback passwordCB = new PasswordCallback ("Password", false);
-Callback[] callbacks = new Callback[] { nameCB, passwordCB };
-callbackHandler.handle (callbacks);
-```
+Observation:
+The jQuery version in use is outdated and may be affected by XSS, Prototype Pollution, or Cross-Site Request Forgery (CSRF) vulnerabilities.
 
-- Authenticates the user
-- Retrieves the user supplied information from the callback objects:
-    - `String ID = nameCallback.getName ();`
-    - `char[] tempPW = passwordCallback.getPassword ();`
-- Compare `name` and `tempPW` to values stored in a repository such as LDAP.
-- Set the value of the variable succeeded and return to `Main()`.
+Impact:
+ • Attackers can exploit known vulnerabilities in older jQuery versions.
+ • May lead to client-side code execution or data theft.
 
-### commit()
+Recommendation:
+ • Upgrade jQuery to the latest stable version:
+ • Example: If using jQuery 1.12.4, upgrade to jQuery 3.6.0 or later.
+ • Perform regression testing after updating to ensure compatibility.
 
-Once the users credentials are successfully verified during `login()`, the JAAS authentication framework associates the credentials, as needed, with the subject.
+⸻
 
-There are two types of credentials, **Public** and **Private**:
+5. Server Banner Disclosure
 
-- Public credentials include public keys.
-- Private credentials include passwords and public keys.
+Description:
+The application exposes server details (e.g., web server, framework, OS version) in HTTP response headers.
 
-Principals (i.e. Identities the subject has other than their login name) such as employee number or membership ID in a user group are added to the subject.
+Observation:
+The response headers include Server: Apache/2.4.49, revealing the exact version of the web server in use. This allows attackers to identify known vulnerabilities.
 
-Below, is an example `commit()` method where first, for each group the authenticated user has membership in, the group name is added as a principal to the subject. The subject's username is then added to their public credentials.
+Impact:
+ • Attackers can fingerprint the server and exploit known CVEs.
+ • May lead to automated attacks and exploitation of unpatched vulnerabilities.
 
-Code snippet setting then adding any principals and a public credentials to a subject:
+Recommendation:
+ • Disable server banners in configuration:
+ • Apache: ServerTokens Prod
+ • Nginx: server_tokens off;
+ • IIS: Use URL Rewrite to remove headers.
+ • Use a Web Application Firewall (WAF) to hide server details.
 
-```java
-public boolean commit() {
-    If (userAuthenticated) {
-        Set groups = UserService.findGroups (username);
-        for (Iterator itr = groups.iterator (); itr.hasNext (); {
-            String groupName = (String) itr.next ();
-            UserGroupPrincipal group = new UserGroupPrincipal (GroupName);
-            subject.getPrincipals ().add (group);
-        }
-        UsernameCredential cred = new UsernameCredential (username);
-        subject.getPublicCredentials().add (cred);
-    }
-}
-```
+⸻
 
-### abort()
+6. Token in URL
 
-The `abort()` method is called when authentication doesn't succeed. Before the `abort()` method exits the `LoginModule`, care should be taken to reset state including the username and password input fields.
+Description:
+The application passes authentication or session tokens in URLs, exposing them in browser history, server logs, and referrer headers.
 
-### logout()
+Observation:Sensitive tokens (e.g., JWT, OAuth tokens, session IDs) are found in URLs such as:
 
-The release of the users principals and credentials when `LoginContext.logout` is called:
+https://example.com/dashboard?authToken=abcdef12345
 
-```java
-public boolean logout() {
-    if (!subject.isReadOnly()) {
-        Set principals = subject.getPrincipals(UserGroupPrincipal.class);
-        subject.getPrincipals().removeAll(principals);
-        Set creds = subject.getPublicCredentials(UsernameCredential.class);
-        subject.getPublicCredentials().removeAll(creds);
-        return true;
-    } else {
-        return false;
-    }
-}
-```
+This exposes them to referrer leakage and log-based attacks.
 
-## CallbackHandler.java
+Impact:
+ • Attackers can steal authentication tokens from logs or browser history.
+ • May allow session hijacking if the token is stolen.
 
-The `callbackHandler` is in a source (`.java`) file separate from any single `LoginModule` so that it can service a multitude of LoginModules with differing callback objects:
+Recommendation:
+ • Use HTTP headers instead of URLs for token transmission:
 
-- Creates instance of the `CallbackHandler` class and has only one method, `handle()`.
-- A `CallbackHandler` servicing a LoginModule requiring username & password to login:
+Authorization: Bearer abcdef12345
 
-```java
-public void handle(Callback[] callbacks) {
-    for (int i = 0; i < callbacks.length; i++) {
-        Callback callback = callbacks[i];
-        if (callback instanceof NameCallback) {
-            NameCallback nameCallBack = (NameCallback) callback;
-            nameCallBack.setName(username);
-    }  else if (callback instanceof PasswordCallback) {
-            PasswordCallback passwordCallBack = (PasswordCallback) callback;
-            passwordCallBack.setPassword(password.toCharArray());
-        }
-    }
-}
-```
 
-## Related Articles
+ • Implement short-lived tokens and enforce token expiration.
+ • Use secure cookies with the HttpOnly and Secure flags.
 
-- [JAAS in Action](https://jaasbook.wordpress.com/2009/09/27/intro/), Michael Coté, posted on September 27, 2009, URL as 5/14/2012.
-- Pistoia Marco, Nagaratnam Nataraj, Koved Larry, Nadalin Anthony from book ["Enterprise Java Security" - Addison-Wesley, 2004](https://www.oreilly.com/library/view/enterprise-javatm-security/0321118898/).
+⸻
 
-## Disclosure
+Final Notes:
 
-All of the code in the attached JAAS cheat sheet has been copied verbatim from this [free source](https://jaasbook.wordpress.com/2009/09/27/intro/).
+Since you’re testing a Citrix-based application, ICA traffic encryption and session hijacking prevention are critical. Prioritize fixing ICA cleartext password exposure and token leaks first. Let me know if you need exploitation steps or proof-of-concept (PoC) scripts for any of these!
