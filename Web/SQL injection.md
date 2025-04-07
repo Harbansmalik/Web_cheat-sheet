@@ -220,3 +220,4 @@ def internal_error(error):
 $username = mysqli_real_escape_string($conn, $_POST['username']);
 $query = "SELECT * FROM users WHERE username = '$username'";
 ```
+
