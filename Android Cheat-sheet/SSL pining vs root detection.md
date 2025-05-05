@@ -1,17 +1,34 @@
 # SSL pining
-SSL pinning is a security technique that binds a client application to a specific SSL certificate or public key, preventing man-in-the-middle attacks by ensuring only trusted certificates are accepted.
 
-## CODE in android manifest file:
+Ensures the app only trusts a specific server certificate (or public key), even if the system trust store has other valid CAs.
+Prevents man-in-the-middle (MITM) attacks even if the user installs a rogue root certificate.
 
-- ### android:networkSecurityConfig	
-Links to network security configuration file.
-- ### usesCleartextTraffic="false"
-  Ensures HTTPS is enforced.
-- ### network-security-config
-  Defines security rules in XML.
-- ### domain-config
-  Specifies domains for pinning.
-- ### pin-set
-  Contains pinned certificate fingerprints.
-- ### pin digest="SHA-256"
-  Defines the hash of a trusted certificate.
+##  How to Bypass SSL Pinning:
+
+| Method  |  Description |
+| ---  |  ---  |
+Frida hook  | Inject code to override SSL validation
+Objection tool | Disable pinning in runtime
+Patch smali code | Modify logic to always accept cert
+Xposed module (JustTrustMe) | Hooks trust manager
+Recompile APK | Remove pinning code using apktool
+
+# ROOT DETECTION
+
+Blocks app execution if it detects that the Android device is rooted.
+
+## Typical Checks:
+- Presence of su binary
+- Rooted apps like Magisk, SuperSU
+- Writable /system
+- Build.TAGS includes test-keys
+
+## How to Bypass Root Detection:
+
+| Method | Description |
+| --- | --- |
+Magisk Hide | Hides root status from apps
+Patch APK | Remove root check logic in smali
+Frida Hook | Override methods like isRooted()
+Xposed Module | Modules like RootCloak or HideMyRoot
+Magisk modules | E.g., Universal SafetyNet Fix
