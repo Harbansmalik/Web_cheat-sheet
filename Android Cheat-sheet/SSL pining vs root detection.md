@@ -18,9 +18,9 @@ Recompile APK | Remove pinning code using apktool
 Blocks app execution if it detects that the Android device is rooted.
 
 ## Typical Checks:
-- Presence of su binary
-- Rooted apps like Magisk, SuperSU
-- Writable /system
+- Presence of `su` binary
+- Rooted apps like `Magisk, SuperSU`
+- Writable `/system`
 - Build.TAGS includes test-keys
 
 ## How to Bypass Root Detection:
