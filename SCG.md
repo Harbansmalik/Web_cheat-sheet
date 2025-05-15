@@ -1,4 +1,4 @@
-API rate limiting controls the number of requests a user or system can make within a set time frame, protecting against abuse, brute force attacks, and server overload. It enhances performance, ensures fair usage, and improves application security.
+A rate limit vulnerability in an API occurs when there are insufficient restrictions on the number of requests, allowing attackers to perform brute-force attacks, data scraping, or overwhelm the server, potentially leading to security breaches, data loss, or service disruption.
 
 Detect and block abnormal traffic patterns in real time.
 Enforce identity-based limits and revoke abused keys.
