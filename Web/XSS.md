@@ -13,6 +13,28 @@ Malicious scripts are reflected off a web server, typically via a URL or form su
 ### 3. DOM based XSS:
 The vulnerability exists in the client side code (JavaScript) rather than the server. The malicious script is executed as a result of modifying the DOM (Document Object Model) in the browser, often through unsafe JavaScript functions.
 
+`Sources:`
+A source is where untrusted or user-controlled data enters the application.
+
+| Source Type         | Example                           | Description                   |
+| ------------------- | --------------------------------- | ----------------------------- |
+| `location`          | `window.location.search`          | Query string from the URL     |
+| `document.referrer` | `document.referrer`               | Referring URL                 |
+| `document.cookie`   | `document.cookie`                 | Cookies                       |
+| `localStorage`      | `localStorage.getItem('x')`       | Browser-stored key/value data |
+| `user input`        | `<input>` field, form submissions | Direct user data input        |
+
+`Sink:`
+A sink is a function or property where data is used in a way that can be dangerous if the data is not sanitized.
+| Sink Function    | Example                    | Risk                        |
+| ---------------- | -------------------------- | --------------------------- |
+| `innerHTML`      | `element.innerHTML = data` | Executes HTML/JS → XSS risk |
+| `document.write` | `document.write(data)`     | Renders arbitrary data      |
+| `eval()`         | `eval(data)`               | Executes JS code            |
+| `setTimeout()`   | `setTimeout(data, 1000)`   | Interprets string as code   |
+| `location.href`  | `window.location = data`   | Redirects to attacker site  |
+
+
 ### 4. DOM Clobbering:
 DOM Clobbering is a web vulnerability where an attacker injects specially crafted HTML elements that overwrite default JavaScript object properties or DOM references in the browser, changing the behavior of scripts on the page.
 
