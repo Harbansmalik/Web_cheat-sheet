@@ -13,6 +13,9 @@ Malicious scripts are reflected off a web server, typically via a URL or form su
 ### 3. DOM based XSS:
 The vulnerability exists in the client side code (JavaScript) rather than the server. The malicious script is executed as a result of modifying the DOM (Document Object Model) in the browser, often through unsafe JavaScript functions.
 
+### 4. DOM Clobbering:
+DOM Clobbering is a web vulnerability where an attacker injects specially crafted HTML elements that overwrite default JavaScript object properties or DOM references in the browser, changing the behavior of scripts on the page.
+
 ###  4. Self XSS:
 A less common variant where users are tricked into executing scripts in their own browsers, often through social engineering.
 
