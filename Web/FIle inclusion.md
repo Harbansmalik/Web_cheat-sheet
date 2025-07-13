@@ -80,8 +80,8 @@ An attacker sets up a domain that resolves to their server and then uses it in t
 
 ## MITIGATION FOR FILE INCLUSION
 
-### 1️⃣ Use a Whitelist for Allowed Files
-✅ Restrict file inclusion to specific files only.
+### 1️. Use a Whitelist for Allowed Files
+ Restrict file inclusion to specific files only.
 
 🔹 Example (PHP) - Safe Whitelisting:
 
@@ -94,14 +94,14 @@ if (in_array($file, $allowed_files)) {
 } else {
     die("Access Denied");
 ```
-✅ Why? Prevents attackers from including arbitrary files like /etc/passwd or ../../../../../etc/passwd.
+Prevents attackers from including arbitrary files like /etc/passwd or ../../../../../etc/passwd.
 
-### 2️⃣ Avoid Direct User Input in File Paths
-❌ Bad Example (Vulnerable to LFI & RFI)
+### 2️. Avoid Direct User Input in File Paths
+ Bad Example (Vulnerable to LFI & RFI)
 ```text
 include $_GET['page']; // Allows attackers to specify any file
 ```
-✅ Secure Alternative (Using a Fixed Path)
+ Secure Alternative (Using a Fixed Path)
 ```text
 $file = basename($_GET['page']); // Removes directory traversal attempts
 $path = "includes/" . $file . ".php"; // Ensures file exists in a secure folder
@@ -112,19 +112,19 @@ if (file_exists($path)) {
     die("Invalid file!");
 }
 ```
-✅ Why? Ensures only pre-defined files in the includes/ directory are allowed.
+Ensures only pre-defined files in the includes/ directory are allowed.
 
-### 3️⃣ Disable allow_url_include in PHP (Prevents RFI)
+### 3️. Disable allow_url_include in PHP (Prevents RFI)
 If using PHP, disable remote file inclusion by setting this in php.ini:
 ```text
 Edit
 allow_url_include = Off
 allow_url_fopen = Off
 ```
-✅ Why? Prevents remote files from being included (e.g., http://attacker.com/shell.php).
+Prevents remote files from being included (e.g., http://attacker.com/shell.php).
 
-### 4️⃣ Implement Proper Input Validation & Sanitization
-✅ Remove dangerous characters to prevent directory traversal (../, %00, \, /, :).
+### 4️. Implement Proper Input Validation & Sanitization
+Remove dangerous characters to prevent directory traversal (../, %00, \, /, :).
 
 🔹 Example (PHP) - Secure Input Handling
 ```text
@@ -138,10 +138,10 @@ if (file_exists($path)) {
     die("Invalid Request");
 }
 ```
-✅ Why? Removes special characters used in directory traversal attacks.
+Removes special characters used in directory traversal attacks.
 
-### 5️⃣ Restrict File Permissions & Disable Execution
-✅ Prevent execution of uploaded files in directories like /uploads/.
+### 5️. Restrict File Permissions & Disable Execution
+Prevent execution of uploaded files in directories like /uploads/.
 
 🔹 For Apache (Prevent PHP Execution in Uploads Directory)
 Add this to .htaccess:
@@ -150,7 +150,7 @@ Add this to .htaccess:
     php_flag engine off
 </Directory>
 ```
-✅ Why? Prevents attackers from executing malicious PHP files in /uploads/.
+Prevents attackers from executing malicious PHP files in /uploads/.
 
 🔹 For Nginx (Restrict PHP Execution in Uploads)
 ```text
@@ -160,9 +160,9 @@ location /uploads {
     }
 }
 ```
-✅ Why? Blocks execution of .php files in the /uploads directory.
+Blocks execution of .php files in the /uploads directory.
 
-### 6️⃣ Use Secure File Handling Functions
+### 6️. Use Secure File Handling Functions
 Instead of using include, use secure file handling functions like file_get_contents() with strict validation.
 
 🔹 Example (PHP) - Using file_get_contents Securely
@@ -176,26 +176,26 @@ if (in_array($file, $allowed_files)) {
     die("Invalid file request");
 }
 ```
-✅ Why? Prevents directory traversal and limits file access.
+Prevents directory traversal and limits file access.
 
-### 7️⃣ Monitor Logs & Set Alerts
-✅ Monitor logs for LFI & RFI attack attempts (e.g., ../../, %00, http://).
+### 7️. Monitor Logs & Set Alerts
+Monitor logs for LFI & RFI attack attempts (e.g., ../../, %00, http://).
 
 🔹 Example (Linux - Monitor Access Logs for LFI Patterns)
 ```text
 grep -E '(\.\./|%00|http://)' /var/log/apache2/access.log
 ```
-✅ Why? Helps in detecting attacks in real-time and setting alerts.
+Helps in detecting attacks in real-time and setting alerts.
 
-### 8️⃣ Web Application Firewall (WAF) & ModSecurity Rules
-✅ Deploy WAF rules to block LFI & RFI patterns.
+### 8️. Web Application Firewall (WAF) & ModSecurity Rules
+Deploy WAF rules to block LFI & RFI patterns.
 
 🔹 Example (ModSecurity Rules - Block LFI & RFI Patterns)
 ```text
 SecRule REQUEST_URI "@rx (\.\./|%00|/etc/passwd)" "id:1234,deny,status:403,msg:'Possible LFI Attack'"
 SecRule ARGS "@rx (https?://)" "id:1235,deny,status:403,msg:'Possible RFI Attack'"
 ```
-✅ Why? Blocks common LFI & RFI attack patterns automatically.
+Blocks common LFI & RFI attack patterns automatically.
 
 
 
