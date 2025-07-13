@@ -70,10 +70,9 @@ The application generates a password reset link like this:
 https://example.com/reset?token=ABC123
 ```
 
-## Mitigation of Host header injection:
+## `Mitigation of Host header injection:`
 
-### 1️⃣ Enforce a Strict Allowlist of Trusted Hostnames
-✅ Solution:
+### 1️. Enforce a Strict Allowlist of Trusted Hostnames
 
 Only allow approved domain names in the Host header.
 Block requests with unexpected or empty Host headers.
@@ -97,18 +96,17 @@ server {
     }
 }
 ```
-### 2️⃣ Do Not Trust User-Supplied "Host" Headers in Application Logic
-✅ Solution:
+### 2️. Do Not Trust User-Supplied "Host" Headers in Application Logic
 
 Avoid using $_SERVER['HTTP_HOST'] (PHP) or request.get_host() (Django) directly.
 Use hardcoded values for password reset links instead of relying on the Host header.
+
 🔹 Example (Secure Password Reset Link in PHP)
 
 ```text
 $reset_link = "https://example.com/reset-password?token=$token";
 ```
-### 3️⃣ Configure Web Server to Reject Invalid Host Headers
-✅ Solution:
+### 3️. Configure Web Server to Reject Invalid Host Headers
 
 Set strict Host header validation in your server configuration.
 Reject requests that contain multiple Host headers.
@@ -124,10 +122,8 @@ if ($http_host !~* ^(example\.com|www\.example\.com)$) {
     return 403;
 }
 ```
-## 4️⃣ Prevent Web Cache Poisoning
+## 4️. Prevent Web Cache Poisoning
 If a web application uses a cache system (CDN, Varnish, etc.), attackers can exploit it by injecting Host headers to store malicious responses.
-
-✅ Solution:
 
 Ensure cache keys include only trusted Host values.
 Set a strict Cache-Control policy.
@@ -139,8 +135,7 @@ Header set Cache-Control "no-cache, no-store, must-revalidate"
 ```text
 proxy_cache_key "$scheme$request_method$host$request_uri";
 ```
-## 5️⃣ Implement a Web Application Firewall (WAF)
-✅ Solution:
+## 5️. Implement a Web Application Firewall (WAF)
 
 Deploy a WAF to detect and block Host Header Injection attempts.
 Filter requests that contain multiple Host headers or malformed inputs.
@@ -149,8 +144,8 @@ Filter requests that contain multiple Host headers or malformed inputs.
 ```text
 SecRule REQUEST_HEADERS:Host "!^example\.com$" "deny,status:403"
 ```
-## 6️⃣ Use Strict Transport Security (HSTS)
-✅ Solution:
+## 6️. Use Strict Transport Security (HSTS)
+
 
 Enforce HTTPS and prevent HTTP downgrade attacks.
 Block browsers from accepting modified Host headers.
