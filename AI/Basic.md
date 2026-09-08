@@ -1,10 +1,8 @@
 # What is an LLM?
 
-LLM = Large Language Model.
+###  LLM = Large Language Model.
 
-Simply:
-
-An LLM is an AI model that can understand and generate human-like text.
+An LLM is an AI model trained on a large amount of data that can understand user input and generate human-like responses.
 
 Example
 
@@ -15,12 +13,10 @@ User: "What is SQL Injection?"
 The LLM understands the question and generates an answer.
 
 Flow:
-
+```text
 User → Prompt → LLM → Response
+```
 
-Interview answer
-
-An LLM is an AI model trained on a large amount of data that can understand user input and generate human-like responses.
 
 # What is Prompt Injection?
 
