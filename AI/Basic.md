@@ -1,4 +1,4 @@
-1. What is an LLM?
+# What is an LLM?
 
 LLM = Large Language Model.
 
@@ -22,7 +22,7 @@ Interview answer
 
 An LLM is an AI model trained on a large amount of data that can understand user input and generate human-like responses.
 
-2. What is Prompt Injection?
+# What is Prompt Injection?
 
 Prompt injection means giving a malicious instruction to an AI to change its behavior or make it ignore its original instructions.
 
@@ -54,7 +54,7 @@ Interview answer
 
 Prompt injection is an attack where an attacker crafts malicious input to manipulate an LLM into ignoring or overriding its intended instructions.
 
-3. Difference Between Direct and Indirect Prompt Injection
+# Difference Between Direct and Indirect Prompt Injection
 
 The easiest way to remember:
 
@@ -96,7 +96,7 @@ Easy interview answer
 
 Direct prompt injection comes directly from the user's input, whereas indirect prompt injection comes through external content such as emails, documents, websites, or retrieved data that the AI processes.
 
-4. What is a Jailbreak?
+# What is a Jailbreak?
 
 A jailbreak is an attempt to make an AI bypass its safety restrictions or policies.
 
@@ -122,7 +122,7 @@ Interview answer
 
 A jailbreak is an attempt to bypass an LLM's safety restrictions or policies so that it produces content that it was designed to refuse.
 
-5. Prompt Injection vs Jailbreak
+# Prompt Injection vs Jailbreak
 
 This is a very common interview question.
 
@@ -141,7 +141,7 @@ Interview answer
 
 Prompt injection focuses on manipulating the model's instructions or context, while jailbreak specifically attempts to bypass the model's safety policies or restrictions. A jailbreak can be considered a type of adversarial prompting, but the terms are not always interchangeable.
 
-6. What is Hallucination?
+# What is Hallucination?
 
 Hallucination means the AI gives an answer that sounds correct but is actually false or unsupported.
 
@@ -183,7 +183,7 @@ Interview answer
 
 Hallucination occurs when an LLM generates information that is incorrect, fabricated, or unsupported but presents it as if it were factual.
 
-7. What is Sensitive Information Disclosure in an LLM?
+# What is Sensitive Information Disclosure in an LLM?
 
 It means the AI reveals sensitive or confidential information that it shouldn't reveal.
 
@@ -218,7 +218,7 @@ Interview answer
 
 Sensitive information disclosure occurs when an LLM exposes confidential information such as credentials, personal data, API keys, internal documents, or other sensitive information through its responses.
 
-8. What is Insecure Output Handling?
+# What is Insecure Output Handling?
 
 This means the application blindly trusts or improperly processes the AI's output.
 
@@ -250,7 +250,7 @@ Interview answer
 
 Insecure output handling occurs when an application fails to properly validate, sanitize, encode, or otherwise safely process LLM-generated output before using it in downstream systems.
 
-9. What is Model Extraction?
+# What is Model Extraction?
 
 Model extraction means an attacker tries to copy or recreate the behavior of an AI model by sending many queries and studying its responses.
 
@@ -282,7 +282,7 @@ Interview answer
 
 Model extraction is an attack where an adversary queries an AI model extensively and uses the responses to reproduce or approximate the model's behavior.
 
-10. What is Data Poisoning?
+# What is Data Poisoning?
 
 Data poisoning means an attacker puts malicious or incorrect data into the training or fine-tuning data so that the AI learns unwanted behavior.
 
@@ -316,7 +316,7 @@ Interview answer
 
 Data poisoning is an attack where malicious or manipulated data is inserted into an AI model's training or fine-tuning dataset to influence its behavior.
 
-11. What is an Adversarial Prompt?
+# What is an Adversarial Prompt?
 
 An adversarial prompt is a specially crafted input designed to make the AI behave incorrectly or unexpectedly.
 
@@ -344,7 +344,7 @@ Interview answer
 
 An adversarial prompt is intentionally crafted input designed to manipulate an AI model into producing an incorrect, unsafe, unintended, or policy-violating response.
 
-12. What is Context-Window Manipulation?
+# What is Context-Window Manipulation?
 
 An LLM has a limited amount of information it can consider at once. This is called its context window.
 
@@ -373,7 +373,7 @@ Interview answer
 
 Context-window manipulation involves deliberately manipulating the amount or structure of information provided to an LLM to overwhelm, confuse, or alter the context used to generate its response.
 
-13. What is System-Prompt Leakage?
+# What is System-Prompt Leakage?
 
 The system prompt contains instructions given to the AI by the application/developer.
 
@@ -406,7 +406,7 @@ Interview answer
 
 System-prompt leakage occurs when an attacker obtains hidden system or developer instructions that were intended to remain confidential.
 
-14. How Would You Test an AI Chatbot for Security Vulnerabilities?
+# How Would You Test an AI Chatbot for Security Vulnerabilities?
 
 This is probably the most important question for your interview.
 
